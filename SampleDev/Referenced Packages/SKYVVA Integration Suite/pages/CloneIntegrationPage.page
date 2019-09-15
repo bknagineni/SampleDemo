@@ -1,0 +1,26 @@
+<apex:page standardController="skyvvasolutions__Integration__c" extensions="skyvvasolutions.CloneIntegrationController">
+	<apex:sectionHeader title="SKYVVA Integration Suite" subtitle="Integration Clone"/>
+	<apex:form id="frm">
+		<apex:pagemessages id="messages"/>
+		
+		
+		<apex:pageBlock id="pbCloneIntegration" title="Integration Clone">
+			
+			<apex:pageblockButtons location="Top">
+				<apex:commandButton value="Clone Integration" action="{!doClone}" rerender="messages" status="status"/>
+				<apex:commandButton action="{!cancel}" value="Cancel"/> 
+			</apex:pageblockButtons>
+			
+			<apex:pageblocksection columns="2">
+				
+				<apex:inputField value="{!integ.Name}" required="true"/>
+			</apex:pageblocksection>
+    	</apex:pageBlock> 
+		
+		<apex:actionStatus id="status">
+       		<apex:facet name="start">
+            	<c:Load ImageUrl="/img/loading.gif" BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="120px" Message="Loading..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+        </apex:actionStatus>
+	</apex:form>
+</apex:page>

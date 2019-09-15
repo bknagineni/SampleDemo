@@ -1,0 +1,61 @@
+<apex:page id="plistData" standardController="skyvvasolutions__IMessage__c" extensions="skyvvasolutions.ClsNewEditViewData">
+<apex:relatedList list="Messages__r" />
+<apex:form id="frmListData">
+  
+  <apex:pageblock id="pbLData" title="Data" helpTitle="Data Help" helpUrl="/help/doc/user_ed.jsp?loc=help&target=co_relatedlist.htm&section=CustomObjects">
+  <apex:pageblocksection id="pbsResult" columns="1">
+      <apex:pageblocktable id="pbTable" value="{!datas}" var="d"  rendered="{!ISNULL(error)}">
+            <apex:column styleClass="actionColumn">
+                <apex:facet name="header">Action</apex:facet>
+                <apex:commandLink styleClass="actionLink" id="cmlEdit" action="{!lnkEdit}">Edit
+                    <apex:param name="dataId" value="{!d.iData.id}" assignTo="{!dataId}"/>
+                </apex:commandLink>
+                &nbsp;|&nbsp;
+                <apex:commandLink styleClass="actionLink" id="cmlDelete" onclick="return confirmMsg();" action="{!lnkDel}">Del
+                    <apex:param name="dataId" value="{!d.iData.id}" assignTo="{!dataId}"/>
+                </apex:commandLink>
+            </apex:column>
+                
+          <apex:column >
+                <apex:facet name="header">ID</apex:facet>
+                <apex:commandLink id="cmlName" action="{!lnkView}">{!d.iData.Name}
+                    <apex:param name="dataId" value="{!d.iData.id}" assignTo="{!dataId}"/>
+                </apex:commandLink>
+            </apex:column>
+            
+            <apex:column value="{!d.iData.skyvvasolutions__Name__c}"/>
+            <apex:column value="{!d.iData.skyvvasolutions__Value2__c}"/>
+            <apex:column headervalue="Created Date" value="{!d.createDate}"/>
+            <apex:column headervalue="Last Modified Date" value="{!d.modifiedDate}"/>
+            
+      </apex:pageblocktable>
+      
+  </apex:pageblocksection>
+  
+  <apex:outputText value="{!error}" rendered="{!NOT(ISNULL(error))}"></apex:outputText>
+  
+  </apex:pageblock>
+  
+  <apex:pageBlock title="Message History">
+      <apex:outputText value="{!noHistory}" rendered="{!noHistory<>''}"/>
+      <apex:pageBlockTable value="{!histories}" var="h" rendered="{!noHistory=''}">
+           <apex:column headerValue="Date" value="{!h.thedate}"/>                                
+           <apex:column headerValue="User"><apex:outputLink value="/{!h.userId}">{!h.who}</apex:outputLink></apex:column>
+           <apex:column headerValue="Action">
+                <apex:outputText >{!h.pref}<b>{!h.lbl}</b>{!h.fromText}{!IF(h.toText='','',' to ')}<b>{!h.toText}</b>.</apex:outputText>
+           </apex:column>
+       </apex:pageBlockTable>
+  </apex:pageBlock>
+    
+</apex:form> 
+ <script>
+       //confirm when delete button click
+       function confirmMsg(){
+            if(!confirm('Are you sure?')){
+               return false;
+            }
+            return true;
+        }
+</script>
+
+</apex:page>

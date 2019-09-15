@@ -1,0 +1,59 @@
+<apex:page standardController="skyvvasolutions__InterfaceGroup__c" extensions="skyvvasolutions.InterfaceGroupController" id="page">
+	<apex:sectionHeader title="Interface Group" subtitle="{!skyvvasolutions__InterfaceGroup__c.Name}"></apex:sectionHeader>
+	
+	<apex:form id="frm">
+		<apex:pagemessages id="messages"/>
+		
+		<apex:outputpanel id="pnlView"  rendered="{!isView}">
+			<apex:detail id="dtInterfaces" relatedList="false" title="false"  rendered="{!isView}"/>
+			<apex:pageBlock id="pdViewInterfaces" title="Interfaces"  rendered="{!isView}">
+				<apex:pageBlockButtons id="pbBtn" location="Top">
+					<apex:commandButton value="Add Interfaces" action="{!addInterfaces_Click}"/>
+				</apex:pageBlockButtons>
+				
+				<apex:outputText value="No records to display"  rendered="{!Not(hasInterface)}"/>
+				
+		        <apex:pageBlockTable value="{!interfacess}" var="r" rendered="{!hasInterface}">
+		        	<apex:column headervalue="Action">
+	            		<apex:commandLink id="cmlRev" styleClass="actionLink" value="Remove" title="Remove Interface from Group" rendered="{!Not(isDefaultIG)}"
+	            			onclick="var bRemove=confirm('Are you sure?');if(bRemove==false){return false;}" action="{!removeInterfaceFromGroup}" 
+	            			status="status" rerender="frm">
+					    	<apex:param name="removeInterface" value="{!r.id}" assignTo="{!idRemove}"/>
+						</apex:commandLink>
+		            </apex:column>
+	        		<apex:column headervalue="Interface">
+	            		<apex:outputLink value="/{!r.id}" target="_blank">{!r.skyvvasolutions__Name__c}</apex:outputLink>
+		            </apex:column>
+					<apex:column value="{!r.skyvvasolutions__Source_Name__c}"/>
+					<apex:column value="{!r.skyvvasolutions__InterfaceGroupSequence__c}"/>
+					<apex:column value="{!r.skyvvasolutions__Type__c}"/>
+	        	</apex:pageBlockTable>
+	    	</apex:pageBlock> 
+    	</apex:outputpanel>
+		
+		<apex:pageBlock id="pbAddInterfaces" title="Interfaces" rendered="{!Not(isView)}">
+			<apex:pageBlockButtons id="pbBtn">
+				<apex:commandButton value="Save" action="{!doSave}" oncomplete="if('{!isError}'==false){window.location.href='/{!URLENCODE($Request.id)}';return false;}" 
+						status="status" rerender="frm" id="btnAdd"/>
+				<apex:commandButton value="Cancel" onclick="window.location.href='/{!URLENCODE($Request.id)}';return false;" id="btnCancel"/>
+			</apex:pageBlockButtons>
+			
+			<apex:outputText value="No records to display"  rendered="{!Not(hasInterface)}"/>
+			<apex:pageBlocktable value="{!dtos}" var="dto" id="pbTbl" rendered="{!hasInterface}">
+				<apex:column >
+					<apex:inputCheckbox value="{!dto.checked}" id="row_ids" />
+				</apex:column>
+				<apex:column headervalue="Interface" value="{!dto.intf.skyvvasolutions__Name__c}"/>
+				<apex:column headervalue="Sequence" >
+					<apex:inputfield value="{!dto.intf.skyvvasolutions__InterfaceGroupSequence__c}"/>
+				</apex:column>
+				<apex:column value="{!dto.intf.skyvvasolutions__Interface_Group__c}"/>
+			</apex:pageBlocktable>	
+		</apex:pageBlock>
+		<apex:actionStatus id="status">
+       		<apex:facet name="start">
+            	<c:Load ImageUrl="/img/loading.gif" BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="120px" Message="Loading..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+        </apex:actionStatus>
+	</apex:form>
+</apex:page>

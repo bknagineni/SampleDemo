@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <content>CloneIntegrationPage</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>IntegrationOnDemand</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Master Object : Integration OnDemand Object
+
+PLEASE DO NOT TOUCH</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Agent_Last_Run_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Agent Last Run Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Agent_Next_Run_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Agent Next Run Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>AttachmentReprocessCounter__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Attachment Reprocess Counter</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AutomaticReprocessing__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If it is checked, the Message Reprocess scheduler will perform Message Reprocessing for this integration</inlineHelpText>
+        <label>Automatic Reprocessing</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Automatic_Data_Maintenance_Tasks__c</fullName>
+        <deprecated>false</deprecated>
+        <description>@deprecated.
+Use fields &quot;Automatic Reprocessing&quot;, &quot;Delete Logs&quot; and &quot;Delete Log Files&quot; instead</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Select tasks to be done via automatic data maintenance scheduler:
+   - Deletion: for messages and logs
+   - Reprocessing: for messages</inlineHelpText>
+        <label>Automatic Data Maintenance Tasks</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Deletion</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Reprocessing</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>BatchCounter__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Attachment Process Counter</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cached_Maintenance_Job_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>NO LONGER USED</description>
+        <externalId>false</externalId>
+        <label>Cached Maintenance Job Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Clear_After_Processing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This will enable deletion of messages (by default, it will delete completed messages)</inlineHelpText>
+        <label>Delete Messages</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Clear_All_Messages_in_Processed_Status__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Clear All Messages in Processed Status</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DeleteBasketHistories__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If it is checked, the Maintenance scheduler will perform Basket History Deletion for this integration</inlineHelpText>
+        <label>Delete Basket Histories</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DeleteLogs__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If it is checked, the Maintenance scheduler will perform Log Deletion for this integration</inlineHelpText>
+        <label>Delete Logs</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Delete_All_Logs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>@deprecated.
+Use new fields &quot;Log Levels to Delete&quot; and &quot;Delete Log Files&quot; instead</inlineHelpText>
+        <label>Delete All Logs</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Delete_Log_Files__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This will delete log files</inlineHelpText>
+        <label>Delete Log Files</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>End_Point__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Cloud Agent End Point</description>
+        <externalId>false</externalId>
+        <label>End Point</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ExtId__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>Use to make the integration name unique</description>
+        <externalId>false</externalId>
+        <label>ExtId</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Integrate_Batch_Apex_Job_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>NO LONGER USED</description>
+        <externalId>false</externalId>
+        <label>Integrate Batch Apex Job Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Integrate_Batch_Schedule_Job_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>NO LONGER USED</description>
+        <externalId>false</externalId>
+        <label>Integrate Batch Schedule Job Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Integrate_Batch_Time_Interval__c</fullName>
+        <defaultValue>10</defaultValue>
+        <deprecated>false</deprecated>
+        <description>NO LONGER USED</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The interval (in minutes) used for batch job scheduler created by integrateBatch webservice call, when exceeding SF max limit concurrent batch jobs. For example, if its value is 10, then the integrateBatch scheduler will be run every 10 minutes</inlineHelpText>
+        <label>Integrate Batch Time Interval (minutes)</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IntegrationGroupSequence__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Integration Group Sequence</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IntegrationGroup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The integration group this integration belongs to</inlineHelpText>
+        <label>Integration Group</label>
+        <referenceTo>IntegrationGroup__c</referenceTo>
+        <relationshipLabel>Integration</relationshipLabel>
+        <relationshipName>Integration</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Keep_BasketHistories_for_n_days__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of days to keep basket histories.
+- If the value is blank, then it will delete immediately.</inlineHelpText>
+        <label>Number of Days to Keep Basket Histories</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Keep_Completed_Messages_for_n_days__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of days to keep messages. 
+                        - If the value is blank, then it will delete immediately.</inlineHelpText>
+        <label>Number of Days to Keep Messages</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Keep_Logs_for_n_days__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of days to keep logs and log files. 
+                        - If the value is blank, then it will delete immediately.</inlineHelpText>
+        <label>Number of Days to Keep Logs &amp; Log Files</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Log_Levels_to_Delete__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This will delete logs in the selected levels.</inlineHelpText>
+        <label>Log Levels to Delete</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Error</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Warning</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Info</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Login__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Cloud Agent Login</description>
+        <externalId>false</externalId>
+        <label>Login</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaintenanceCounter__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Maintenance Counter</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Maintenance_Job_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>NO LONGER USED</description>
+        <externalId>false</externalId>
+        <label>Maintenance Job Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MessageReprocessCounter__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Message Reprocess Counter</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Message_Statuses_to_Delete__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>In addition to completed status, this will delete messages in other statuses (pending or failed)</inlineHelpText>
+        <label>Additional Message Statuses to Delete</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Failed</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Cancelled</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Next_Run_Date__c</fullName>
+        <defaultValue>NOW()</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Last Run Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Integrate_Batch_Concurrent_Job__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Used in integrateBatch with scheduler to indicate the concurrent batch jobs allowed, which then will create a file for later upload. Maximum value is the maximum concurrent batch jobs allowed by Salesforce</inlineHelpText>
+        <label>Number of Integrate Batch Concurrent Job</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Others_recipient__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The recipients&apos; email addresses (Comma-Separated List). For example: john@yahoo.com, george@gmail.com, etc</inlineHelpText>
+        <label>Send Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Packet__c</fullName>
+        <defaultValue>20</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Setup : nb message sent by iservice</description>
+        <externalId>false</externalId>
+        <label>Packet</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Password__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Cloud Agent Password</description>
+        <externalId>false</externalId>
+        <label>Password</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Run_every_n_minutes__c</fullName>
+        <deprecated>false</deprecated>
+        <description>NO LONGER USED</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Run Time Interval in minutes for Automatic Data Maintenance 
+Leave it blank for default (every hour)</inlineHelpText>
+        <label>Run Time Interval (in minutes)</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Running__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Running</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>SF_End_Point__c</fullName>
+        <deprecated>false</deprecated>
+        <description>End point to sf services</description>
+        <externalId>false</externalId>
+        <label>SF End Point</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Schedule__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>NO LONGER USED</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this for automatic data maintenance scheduler</inlineHelpText>
+        <label>Automatic Data Maintenance Schedule</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Sender__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Logical Sender name for Outbound-Interfaces</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Logical Sender name for Outbound-Interfaces</inlineHelpText>
+        <label>Sender</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Source</label>
+        <referenceTo>Adapter__c</referenceTo>
+        <relationshipLabel>Integration</relationshipLabel>
+        <relationshipName>Integration</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Target_Namespace__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates &quot;targetNamespace&quot; for Export Salesforce WSDLs for PI</inlineHelpText>
+        <label>Target Namespace</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Task_to_be_created__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Task to be created</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Total_Basket_History__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of basket history</inlineHelpText>
+        <label>Total  Basket History</label>
+        <summaryForeignKey>IBatchBasketHistory__c.Integration__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>User__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>recipient recieving all email alert</description>
+        <externalId>false</externalId>
+        <label>Create Task for User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Integration</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>WorkFlow__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>WorkFlow</label>
+        <referenceTo>IWorkFlow__c</referenceTo>
+        <relationshipLabel>Integration</relationshipLabel>
+        <relationshipName>Integration</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Integration</label>
+    <nameField>
+        <label>Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Integration</pluralLabel>
+    <searchLayouts>
+        <listViewButtons>Import_Integration2</listViewButtons>
+        <listViewButtons>Export_Integration</listViewButtons>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Batch_Control_Board</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Batch Control Board</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.open(&quot;/apex/skyvvasolutions__BatchControlBoard?id={!Integration__c.Id}&quot;);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Batch_Manual_Load</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Mass Manual Load</masterLabel>
+        <openType>replace</openType>
+        <page>FileIntegrationPage_Batch</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Bulk_Control_Board</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Bulk Control Board</masterLabel>
+        <openType>noSidebar</openType>
+        <page>IntegrationBulkLogView</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>DeploymentScript</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Deployment Script</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>var width = 400;
+var height = 400;
+var left = (screen.width - width)/2;
+var top = (screen.height - height)/2;
+var params = &apos;width=&apos;+width+&apos;, height=&apos;+height;
+params += &apos;, top=&apos;+top+&apos;, left=&apos;+left;
+params += &apos;, directories=no&apos;;
+params += &apos;, location=no&apos;;
+params += &apos;, menubar=no&apos;;
+params += &apos;, resizable=no&apos;;
+params += &apos;, scrollbars=no&apos;;
+params += &apos;, status=no&apos;;
+params += &apos;, toolbar=no&apos;;
+
+ newwin=window.open(&quot;/apex/ExportDeploymentScript?id=&quot; + &apos;{!Integration__c.Id}&apos; + &quot;&amp;exp=1&quot;,&apos;windowname5&apos;, params);
+ if (window.focus) {newwin.focus()}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Export_Integration</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Export Integration</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>var recsSel = {!GETRECORDIDS( $ObjectType.Integration__c)}; 
+if(recsSel==&quot;&quot;){
+     alert(&quot;Please select record(s) to export&quot;);
+}else{
+     
+     for(var i=0;i&lt;recsSel.length;i++){
+          var newwin=window.open(&quot;/apex/skyvvasolutions__ExportDeploymentScript?id=&quot; + recsSel[i] + &quot;&amp;exp=1&quot;,&apos;_blank&apos;);
+          if (window.focus) {newwin.focus();}
+     }
+
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Import_Integration</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Import Integration</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.location.href=&quot;/apex/skyvvasolutions__ImportDeploymentScript?intgId=&quot; + &quot;{!Integration__c.Id}&quot;;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Import_Integration2</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Import Integration</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>window.location.href=&quot;/apex/skyvvasolutions__ImportDeploymentScript&quot;;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Import_Interface</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Import Interface</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.location.href=&quot;/apex/skyvvasolutions__ImportDeploymentScriptInterface?id=&quot; + &quot;{!Integration__c.Id}&quot;;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Integration_Studio</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Integration Studio</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>//alert(&apos;Access Denied&apos;);
+// window.open(&apos;/apex/IntegrationStudio?id={!Integration__c.Id}&apos;)
+var popWin= window.open(&apos;/apex/skyvvasolutions__IntegrationStudio?id={!Integration__c.Id}&apos;,this.target,&apos;menubar=1,toolbar=1,location=0,resizable=yes&apos;); 
+popWin.moveTo(0,0); popWin.resizeTo(screen.width,screen.height);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Link_Manual_Load</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Manual Load</masterLabel>
+        <openType>replace</openType>
+        <page>FileIntegrationPage</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Manage_Middleware_WSDLs</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Manage Middleware WSDLs</masterLabel>
+        <openType>noSidebar</openType>
+        <page>ManageMiddlewareWSDL</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Messages_Board</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Messages Board</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.location.href=&apos;/apex/skyvvasolutions__DynamicIntegrationMessagePage?integid={!Integration__c.Id}&apos;;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Restart_IntegrateBatch_Scheduler</fullName>
+        <availability>online</availability>
+        <description>@Obsolete
+Restart IntegrateBatch scheduler for its integration group</description>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Restart IntegrateBatch Scheduler</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>alert(&apos;It is obsolete!\nPlease go to Integration Admin page to manage schedulers instead.&apos;);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Schedule_Batch_Integration</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Schedule Batch Integration</masterLabel>
+        <openType>newWindow</openType>
+        <page>ScheduleIntegration</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+</CustomObject>

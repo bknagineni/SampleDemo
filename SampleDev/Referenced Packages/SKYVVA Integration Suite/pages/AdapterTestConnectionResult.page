@@ -1,0 +1,15 @@
+<apex:page id="vf" standardController="skyvvasolutions__Adapter__c" extensions="skyvvasolutions.AdapterTestConnection" 
+sidebar="false" showHeader="false" title="Test Connection Result">
+	<apex:pageBlock title="Ping Connection Result" id="pbConnectionInfo" id="pbConnectionInfo">
+		<div id="result" style="white-space: pre-line;"></div>
+		<apex:pageMessages id="messages"/>
+	</apex:pageBlock>
+	<script type="text/javascript">
+	window.onload = function() {
+	document.getElementById("result").innerHTML="{!JSENCODE(result)}";
+	}
+	</script>
+
+	<br/>
+	<!-- <b>User Name: {!username}</b> -->
+</apex:page>

@@ -1,0 +1,23 @@
+<apex:page id="MessageDate" standardController="skyvvasolutions__IMessage__c" extensions="skyvvasolutions.ClsNewEditViewData">
+	<style>
+		.lblCol{
+	        color:#333333;
+	        font-size:91%;
+	        font-weight:bold;
+	        padding:2px 10px 2px 2px;
+	        text-align:right; 
+	    }
+	    
+	    .lblCol2{
+	    	padding-left: 7px;
+	    }
+	</style>
+	
+	<apex:panelGrid columns="2" cellspacing="5" columnClasses="lblCol,lblCol2" style="padding-left:65px;">
+       <apex:outputlabel value="Creation Date"/>
+       <apex:outputText value="{!creationDate}"/>
+       
+       <apex:outputlabel value="Modification Date"/>
+       <apex:outputText value="{!modifiedDate}"/>
+	</apex:panelGrid>
+</apex:page>

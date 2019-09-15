@@ -1,0 +1,220 @@
+<apex:page controller="skyvvasolutions.LicenseKeyOverview" id="page"> 
+        
+        <style type="text/css">
+    
+        .lblCol{
+            color:#333333;
+            font-size:91%;
+            font-weight:bold;
+            padding:2px 10px 2px 2px;
+            text-align:right; 
+        }
+        
+        .lblCol2{}
+        .customPopup{
+            background-color: white;
+            border-style:ridge !important;
+            border-width: 1px;
+            left: 50%;
+            padding:10px;
+            position: absolute;
+            z-index: 9997;
+            width: 475px;
+            margin-left: -240px;
+            bottom:150px;
+        }
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9996;
+        }
+    </style>
+        
+    <script>
+    
+        String.prototype.trim=function(){
+            return this.replace(/^\s*|\s*$/g,"");
+        }
+        function selAllOrNoneByCheckboxUser(form, obj){
+            try{
+            
+                nbChk=document.getElementById('nbCheckedUsers');
+                var nb=Number(nbChk.innerHTML); 
+                var value = obj.checked;
+                for (i = 0; i < form.elements.length; i++) {
+                    var el = form.elements[i];
+                    if (el.type=="checkbox") {
+                        if((value==true && el.checked==true) || (value==false && el.checked==false)){
+                       el.checked = value;       
+                            continue;
+                        }            
+                       el.checked = value;       
+                       if(el.checked==true){
+                            nb++;
+                       }
+                       else{
+                            nb--;
+                       }
+                    }
+                }
+                
+                if(nb<0) nb=0;
+                nbChk.innerHTML=nb;   
+                
+            }catch(ex){
+                alert(ex);
+            }
+        }
+        function updateToggleAllBoxUser(form, element_name, val) {
+            
+            // Can be undefined when 0 items in list:
+            var allBox = document.getElementById("{!$Component.page:frm:pbUser:pbSecUser:pbTblUser:allBoxUser}");
+            if (allBox) {
+                allBox.checked = allCheckedUser(form, element_name);
+            }
+            
+            var nbChk=document.getElementById('nbCheckedUsers');
+            var nb=Number(nbChk.innerHTML);
+            if(val==true)
+                nb++;
+             else
+                nb--;
+             if(nb<0) nb=0;
+            nbChk.innerHTML=nb;
+        }
+        function allCheckedUser(form, element_name) {
+            var i = 0;
+        
+            for (i = 0; i < form.elements.length; i++) {
+                var el = form.elements[i];
+                if (el.name.search(element_name)!=-1 && el.type=="checkbox" && el.checked == false) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        //check if user was selected or not 
+        function checkUser(){
+            var nbChk=document.getElementById('nbCheckedUsers');
+            var nb=Number(nbChk.innerHTML);
+            if(nb>0) return true;            
+            alert('Please select at least one record');
+            return false;
+        }
+        function showPopupComplete() {
+            var c=document.getElementById("{!$Component.page:frm:pbUser:newKey}");
+            if(c) {
+                c.focus();    
+            }            
+        }
+        //refresh pbTblUser, set checkAll false
+        function saveRenewKeyComplete() {
+            var allBox = document.getElementById("{!$Component.page:frm:pbUser:pbSecUser:pbTblUser:allBoxUser}");
+            if (allBox) {
+                allBox.checked = false;
+            }
+        }
+        
+    </script>
+    
+        <apex:form id="frm">
+            <apex:pageBlock title="License" id="pbUser">
+            <apex:pageMessages id="messages"/>
+            <apex:pageBlockButtons id="pbBtnUser">      
+			 <apex:commandButton id="renewKey" value="Renew Key" action="{!showPopup}" 
+			     onclick="if(checkUser()==false)return false;" oncomplete="showPopupComplete();"  
+				 status="status" rerender="popup,messages" title="Renew key for the selected users"/>
+            </apex:pageBlockButtons>
+            <div>
+                <apex:outputPanel id="popup">   
+                    <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}"/>       
+                        <apex:outputPanel styleClass="customPopup" layout="block" rendered="{!displayPopup}">
+                            <apex:panelGrid columns="2" cellspacing="5" columnClasses="lblCol,lblCol2">
+                                <apex:outputLabel >New License Key</apex:outputLabel>
+                                <apex:inputText size="50" id="newKey" value="{!newKey}"/>
+                                <apex:outputLabel />
+                                <apex:outputText value="{!newKeyError}" style="color:red;"/>
+                            </apex:panelGrid>
+                        <center>
+                            <apex:commandButton id="btnUpdateKey" value="Renew Key" action="{!updateNewKey}" 
+	                        oncomplete="saveRenewKeyComplete();"  status="status"
+	                            rerender="popup, pnlTbl,messages"/>
+	                        <apex:commandButton value="Cancel" action="{!cancelRenewKey}" status="status" rerender="popup,messages"/>
+                        </center>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </div>
+            <apex:outputLabel value="No records to display" rendered="{!NOT(hasUser)}"/>
+			<apex:outputPanel id="pnlTbl">
+                 <div align="left" style="display:{!IF(hasUser,'block','none')}">
+                     <apex:commandLink action="{!selectAll}" rerender="pnlTbl,messages" title="Select All" status="status"
+                         rendered="{!hasUser}">Select All</apex:commandLink>
+                     &nbsp;<apex:commandLink action="{!deselectAll}" rerender="pnlTbl,messages" title="Deselect All" status="status"
+                         rendered="{!hasUser}">Deselect All</apex:commandLink>
+                     &nbsp;<span style="background-color: rgb(255, 227, 36);">Number of records selected: <span id="nbCheckedUsers">{!nbChecked}</span></span>
+                 </div> 
+			    <div align="right" style="display:{!IF(hasUser,'block','none')};">
+			      Page&nbsp;<apex:outputLabel value="{!PageNumber}"/>&nbsp;&nbsp;
+                  <apex:commandButton value="First" action="{!setCon.first}" disabled="{!NOT(setCon.hasprevious)}" 
+                    rerender="pnlTbl,messages" status="status"/>
+                  <apex:commandButton value="Previous" action="{!setCon.previous}" disabled="{!NOT(setCon.hasprevious)}" 
+                    rerender="pnlTbl,messages" status="status"/>
+                  <apex:commandButton value="Next" action="{!setCon.next}" disabled="{!NOT(setCon.hasnext)}"  
+                    rerender="pnlTbl,messages" status="status"/>
+                  <apex:commandButton value="Last" action="{!setCon.last}" disabled="{!NOT(setCon.hasnext)}" 
+                    rerender="pnlTbl,messages" status="status"/>
+                </div>       
+            <apex:pageBlockSection columns="1" id="pbSecUser" rendered="{!hasUser}">
+					<apex:pageBlockTable value="{!userList}" var="dto" id="pbTblUser">
+                    <apex:column >
+                        <apex:facet name="header">
+									<apex:inputCheckbox id="allBoxUser" title="Select all rows for this page" 
+									   onclick="selAllOrNoneByCheckboxUser(this.form, this);" value="{!pgChecked}"/>
+                        </apex:facet>
+								<apex:inputCheckbox value="{!dto.checked}" id="row_idsUsrs" 
+								    onclick="updateToggleAllBoxUser(this.form,'row_idsUsrs', this.checked);"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:outputLabel value="Username"/>
+                        </apex:facet>
+                        <apex:outputLink value="/{!dto.user.Id}" target="_blank">{!dto.user.Username}</apex:outputLink>
+                    </apex:column>
+                    <apex:column value="{!dto.user.FirstName}"/>
+                    <apex:column value="{!dto.user.LastName}"/>
+                    <apex:column value="{!dto.user.IsActive}"/>
+                    <apex:column value="{!dto.user.skyvvasolutions__CIM_LICENCE_KEY__c}"/>
+                    <apex:column headerValue="Expiration Date">
+								<apex:outputText value="{0,date,dd/MM/yyyy hh:mm:ss}">
+                        <apex:param value="{!dto.expire_date}" />
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column value="{!dto.comment}" headerValue="Comment" style="color:red;"/>
+            </apex:pageBlockTable>
+            </apex:pageBlockSection>
+				<div align="right" style="display:{!IF(hasUser,'block','none')};">
+                  Page&nbsp;<apex:outputLabel value="{!PageNumber}"/>&nbsp;&nbsp;
+                  <apex:commandButton value="First" action="{!setCon.first}" disabled="{!NOT(setCon.hasprevious)}" 
+                    rerender="pnlTbl,messages" status="status"/>
+                  <apex:commandButton value="Previous" action="{!setCon.previous}" disabled="{!NOT(setCon.hasprevious)}" 
+                    rerender="pnlTbl,messages" status="status"/>
+                  <apex:commandButton value="Next" action="{!setCon.next}" disabled="{!NOT(setCon.hasnext)}"  
+                    rerender="pnlTbl,messages" status="status"/>
+                  <apex:commandButton value="Last" action="{!setCon.last}" disabled="{!NOT(setCon.hasnext)}" 
+                    rerender="pnlTbl,messages" status="status"/>
+                </div>    
+			</apex:outputPanel>
+            </apex:pageBlock>
+				<apex:actionStatus id="status">
+        <apex:facet name="start">
+            <c:Load ImageUrl="/img/loading.gif" BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="120px" Message="Loading..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+    </apex:actionStatus>
+        </apex:form>
+</apex:page>

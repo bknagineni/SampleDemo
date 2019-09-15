@@ -1,0 +1,58 @@
+<apex:page standardController="skyvvasolutions__IntegrationGroup__c" extensions="skyvvasolutions.IntegrationGroupController" id="page">
+    <apex:sectionHeader title="Integration Group" subtitle="{!skyvvasolutions__IntegrationGroup__c.Name}"></apex:sectionHeader>
+    
+    <apex:form id="frm">
+        <apex:pagemessages id="messages"/>
+        
+        <apex:outputpanel id="pnlView"  rendered="{!isView}">
+            <apex:detail id="dtIntegrations" relatedList="false" title="false"  rendered="{!isView}"/>
+            <apex:pageBlock id="pdViewIntegrations" title="Integrations"  rendered="{!isView}">
+                <apex:pageBlockButtons id="pbBtn" location="Top">
+                    <apex:commandButton value="Add Integrations" action="{!addIntegrations_Click}"/>
+                </apex:pageBlockButtons>
+                
+                <apex:outputText value="No records to display"  rendered="{!Not(hasIntegration)}"/>
+                
+                <apex:pageBlockTable value="{!Integrations}" var="r" rendered="{!hasIntegration}">
+                    <apex:column headervalue="Action">
+                        <apex:commandLink id="cmlRev" styleClass="actionLink" value="Remove" title="Remove Integration from Group"
+                            onclick="var bRemove=confirm('Are you sure?');if(bRemove==false){return false;}" action="{!removeIntegrationFromGroup}" 
+                            status="status" rerender="frm">
+                            <apex:param name="removeIntegration" value="{!r.id}" assignTo="{!idRemove}"/>
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column headervalue="Integration">
+                        <apex:outputLink value="/{!r.id}" target="_blank">{!r.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column value="{!r.skyvvasolutions__IntegrationGroupSequence__c}"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>             
+        </apex:outputpanel>
+        
+        <apex:pageBlock id="pbAddIntegrations" title="Integrations" rendered="{!Not(isView)}">
+            <apex:pageBlockButtons id="pbBtn">
+                <apex:commandButton value="Save" action="{!doSave}" oncomplete="if('{!isError}'==false){window.location.href='/{!URLENCODE($Request.id)}';return false;}" 
+                        status="status" rerender="frm" id="btnAdd"/>
+                <apex:commandButton value="Cancel" onclick="window.location.href='/{!URLENCODE($Request.id)}';return false;" id="btnCancel"/>
+            </apex:pageBlockButtons>
+            
+            <apex:outputText value="No records to display"  rendered="{!Not(hasIntegration)}"/>
+            <apex:pageBlocktable value="{!dtoIntegs}" var="dto" id="pbTbl" rendered="{!hasIntegration}">
+                <apex:column >
+                    <apex:inputCheckbox value="{!dto.checked}" id="row_ids" />
+                </apex:column>
+                <apex:column headervalue="Integration" value="{!dto.integ.Name}"/>
+                <apex:column headervalue="Sequence" >
+                    <apex:inputfield value="{!dto.integ.skyvvasolutions__IntegrationGroupSequence__c}"/>
+                </apex:column>
+                <apex:column value="{!dto.integ.skyvvasolutions__IntegrationGroup__c}"/>
+            </apex:pageBlocktable>  
+        </apex:pageBlock>
+        <apex:actionStatus id="status">
+            <apex:facet name="start">
+                <c:Load ImageUrl="/img/loading.gif" BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="120px" Message="Loading..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+        </apex:actionStatus>
+    </apex:form>
+    
+</apex:page>

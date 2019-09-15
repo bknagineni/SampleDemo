@@ -1,0 +1,39 @@
+<apex:page standardController="skyvvasolutions__Integration__c" sidebar="false" showHeader="true" tabStyle="skyvvasolutions__Integration__c" id="mainPage" extensions="skyvvasolutions.StorageInfo">
+
+<apex:tabPanel switchType="client" value="{!$CurrentPage.parameters.selTab}" id="IntegrationTabPanel">
+<apex:tab label="Details" name="IntDetails" id="tabdetails">
+    <apex:detail relatedList="false" title="true"/>
+</apex:tab>
+<apex:tab label="Interfaces" name="Interfaces" id="tabInterface">
+    <apex:include pageName="skyvvasolutions__InterfacesOverviewPage" id="intfOverview"/>
+</apex:tab>
+<apex:tab label="Workflows" name="Workflows" id="tabWorkflow">
+    <apex:include pageName="skyvvasolutions__WorkflowsOverviewPage" id="workflowsOverview"/>
+</apex:tab>
+
+<apex:tab label="Messages" name="Messages" id="tabMessages">
+	<apex:pageBlock title="Storage Usage" id="pbBlockMsg">
+	   <apex:outputPanel id="tblStorageMsg" layout="inline"></apex:outputPanel>
+	</apex:pageBlock>
+    <apex:include pageName="skyvvasolutions__DynamicIntegrationMessagePage" id="msgBoard"/>
+</apex:tab>
+
+<apex:tab label="Logs" name="Logs" id="tabLogs">
+	<apex:pageBlock title="Storage Usage" id="pbBlockLog">
+	   <apex:outputPanel id="tblStorageLog" layout="inline"></apex:outputPanel>
+    </apex:pageBlock>
+    <apex:relatedList subject="{!skyvvasolutions__Integration__c}" list="Logs__r" />
+    <apex:include pageName="skyvvasolutions__ILogsView" id="tabILogsView"/>
+</apex:tab>
+
+</apex:tabPanel>
+
+<script type="text/javascript">
+
+window.onload = function() {
+    document.getElementById("{!$Component.mainPage.pbBlockMsg.tblStorageMsg}").innerHTML="{!JSENCODE(storageData)}";
+    document.getElementById("{!$Component.mainPage.pbBlockLog.tblStorageLog}").innerHTML="{!JSENCODE(storageData)}";
+}
+</script>
+
+</apex:page>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>AdapterView</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Integration : Adapter
+
+PLEASE DO NOT TOUCH</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>ExtId__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>Use to make adapter name unique</description>
+        <externalId>false</externalId>
+        <label>ExtId</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Name</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>JDBC</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>ODBC</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>CSV</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Excel</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Xml</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>SAP</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Right90</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>HTTP</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>EMAIL</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>SFDATALOADER</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>TYPO3</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>SAP-PI</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>SAP-R/3</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>SOAP</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>SFDC Rest</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>SFDC2SAPPI</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Adapter</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Adapter</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Test_Connection</fullName>
+        <availability>online</availability>
+        <description>It is used for test connection from Salesforce to SAP</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Ping Connection</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>function popup(url) 
+{ 
+var width = 1000; 
+var height = 400; 
+var left = (screen.width - width)/2; 
+var top = (screen.height - height)/2; 
+var params = &apos;width=&apos;+width+&apos;, height=&apos;+height; 
+params += &apos;, top=&apos;+top+&apos;, left=&apos;+left; 
+params += &apos;, directories=no&apos;; 
+params += &apos;, location=no&apos;; 
+params += &apos;, menubar=no&apos;; 
+params += &apos;, resizable=no&apos;; 
+params += &apos;, scrollbars=no&apos;; 
+params += &apos;, status=no&apos;; 
+params += &apos;, toolbar=no&apos;;
+
+newwin=window.open(url,&apos;windowname5&apos;, params); 
+if (window.focus) {newwin.focus()} 
+return false; 
+} 
+
+var types=&quot;SAP, SAP-PI, SAP-R/3, TYPO3, HTTP, Right90, SFDC Rest, SFDC2SAPPI&quot;;
+if (types.search(&quot;{!Adapter__c.Type__c}&quot;)&gt;-1){
+popup(&apos;/apex/skyvvasolutions__AdapterTestConnectionResult?id={!Adapter__c.Id}&amp;action=ping&apos;);
+}
+else{
+alert(&quot;You can test connection for adapter types (&quot;+types+&quot;)&quot;);
+}</url>
+    </webLinks>
+</CustomObject>

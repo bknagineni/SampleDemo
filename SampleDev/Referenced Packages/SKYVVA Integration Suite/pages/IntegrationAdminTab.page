@@ -1,0 +1,207 @@
+<apex:page controller="skyvvasolutions.IntegrationAdminTab" sidebar="false" id="pAdmindTab" action="{!init}">
+    <apex:sectionHeader title="SKYVVA Integration Suite" subtitle="Integration Admin Tab"></apex:sectionHeader>
+    
+    <apex:form id="frm">
+        <apex:inputHidden id="tabName"/>
+    </apex:form>
+    
+    <apex:tabPanel switchType="client" value="{!$CurrentPage.parameters.selTab}" id="IntegrationTabPanel">
+        <apex:tab label="Integration" name="integration" id="integration" ontabenter="setTabName('integration');">
+                <apex:outputPanel id="pnlIntegration" layout="block">
+                    <apex:enhancedList type="Integration__c" height="500" rowsPerPage="25" id="integrationList"/>
+                </apex:outputPanel>
+        </apex:tab>
+        <apex:tab label="Adapter" name="adapter" id="adapter">
+	        <apex:pageBlock id="iadapter">
+	           <apex:ListViews type="skyvvasolutions__Adapter__c" />
+	        </apex:pageBlock>
+          <apex:actionSupport event="ontabenter" rerender="iadapter" status="status" onsubmit="if(isSubmit('adapter')==false) return false;" oncomplete="setTabName('adapter');"/>
+        </apex:tab>
+        
+
+        
+        <apex:tab label="Messages" name="Messages" id="tabMessages">
+			<apex:include pageName="skyvvasolutions__DynamicIntegrationMessagePage" id="msgBoard"/>
+			<apex:actionSupport event="ontabenter" rerender="msgBoard" status="status" onsubmit="if(isSubmit('Messages')==false) return false;" oncomplete="setTabName('Messages');"/>
+		</apex:tab>
+        
+        
+        <apex:tab label="IStructure Repository" name="istructureRepository" id="istructureRepository">
+          <apex:pageBlock id="pbistructureRepository">
+	           <apex:ListViews type="skyvvasolutions__IStructure_Repository__c" />
+	      </apex:pageBlock>
+          <apex:actionSupport event="ontabenter" rerender="pbistructureRepository" status="status" onsubmit="if(isSubmit('istructureRepository')==false) return false;" oncomplete="setTabName('istructureRepository');"/>    
+        </apex:tab>
+        
+        <apex:tab label="SOAPi Configuration" name="Soapiconfiguration" id="Soapiconfiguration">
+            <apex:pageBlock id="pbSoapi">
+	           <apex:ListViews type="skyvvasolutions__iSOAP_Configuration__c" />
+	        </apex:pageBlock>
+            <apex:actionSupport event="ontabenter" rerender="pbSoapi" status="status" onsubmit="if(isSubmit('Soapiconfiguration')==false) return false;" oncomplete="setTabName('Soapiconfiguration');"/> 
+        </apex:tab>
+
+        <apex:tab label="SKYVVA Reports" name="sReport" id="sReport">
+            <apex:pageBlock title="Reports" id="iReport">
+               <apex:outputtext value="{!noAcessReport}" style="background-color: rgb(255, 227, 36);" 
+                                    rendered="{!NOT(ISNULL(noAcessReport))}"/> 
+               <apex:repeat id="report" value="{!lstReport}" var="dto">
+                   <div>
+                     <img class="reportIcon" title="Report" alt="Report" align="top"  src="/img/analytics/home/listReport.png"/>&nbsp;&nbsp;
+                     <apex:outputLink value="/{!dto.Id}" id="theLink" target="_blank" rendered="{!NOT(ISNULL(dto))}" style="color: #015BA7;font-weight: bold;">{!dto.Name}</apex:outputLink><br/><br/>
+                   </div>
+               </apex:repeat>  
+            </apex:pageBlock> 
+            <apex:actionSupport event="ontabenter" rerender="iReport" status="status" onsubmit="if(isSubmit('sReport')==false) return false;" oncomplete="setTabName('sReport');"/> 
+        </apex:tab>
+        
+        
+        <apex:tab label="License" name="license" id="tablicense">	
+			<apex:include pageName="skyvvasolutions__LicenseKeyOverview" id="tablicenseKeyOverview"/>
+			<apex:actionSupport event="ontabenter" rerender="tablicenseKeyOverview" status="status" onsubmit="if(isSubmit('license')==false) return false;" oncomplete="setTabName('license');"/>
+		</apex:tab>
+		
+		
+        <apex:tab label="Integration Resource" name="iresource" id="iresource">
+          <apex:form >
+	      <apex:pageBlock title="Resources" id="pbiresource">
+	           <apex:pageBlockButtons location="top">     
+	               <apex:commandButton action="{!refreshResources}" value="Refresh" status="status" 
+                    rerender="pbiresource" oncomplete="setTabName('iresource');"/>  
+               </apex:pageBlockButtons>
+                 
+	          <apex:outputLabel value="No records to display" rendered="{!NOT(hasResources)}"/>   
+	          <apex:pageBlockTable value="{!resources}" var="r" rendered="{!hasResources}">
+	              <apex:column >
+	                  <apex:facet name="header">Action</apex:facet>
+	                  <apex:outputLink value="/{!r.Id}/e?retURL={!$Page.skyvvasolutions__IntegrationAdminTab}" styleClass="actionLink">Edit</apex:outputLink>
+	              </apex:column>
+	              <apex:column value="{!r.skyvvasolutions__Priority__c}"/>
+	              <apex:column value="{!r.skyvvasolutions__Resource__c}"/>
+	              <apex:column value="{!r.skyvvasolutions__Counter__c}"/>
+	              <apex:column value="{!r.skyvvasolutions__ReprocessCounter__c}"/>
+	          </apex:pageBlockTable>
+	      </apex:pageBlock>
+	      </apex:form>
+	      <apex:actionSupport event="ontabenter" rerender="pbiresource" status="status" onsubmit="if(isSubmit('iresource')==false) return false;" oncomplete="setTabName('iresource');"/>      
+	    </apex:tab>
+	    
+	    <apex:tab label="Interface Group" name="interfaceGroup" id="interfaceGroup">
+            <apex:outputPanel id="pnlinterfaceGroup" layout="block">
+                <apex:enhancedList type="InterfaceGroup__c" height="500" rowsPerPage="25"/>
+            </apex:outputPanel>
+            <apex:actionSupport event="ontabenter" rerender="pnlinterfaceGroup" status="status" onsubmit="if(isSubmit('interfaceGroup')==false) return false;" oncomplete="setTabName('interfaceGroup');"/> 
+        </apex:tab>
+        <apex:tab label="Queue" name="iqueue" id="iqueue">
+            <apex:outputPanel id="pnliqueue" layout="block">
+                 <apex:enhancedList type="IBatchQueue__c" height="500" rowsPerPage="25"/>
+             </apex:outputPanel>
+            <apex:actionSupport event="ontabenter" rerender="pnliqueue" status="status" onsubmit="if(isSubmit('iqueue')==false) return false;" oncomplete="setTabName('iqueue');"/> 
+        </apex:tab>
+        
+        <apex:tab label="Baskets" name="iBasket" id="iBasket">
+            <apex:outputPanel id="pnliBasket" layout="block">
+                 <apex:enhancedList type="IBatchBasket__c" height="500" rowsPerPage="25"/>
+             </apex:outputPanel>
+            <apex:actionSupport event="ontabenter" rerender="pnliBasket" status="status" onsubmit="if(isSubmit('iBasket')==false) return false;" oncomplete="setTabName('iBasket');"/> 
+        </apex:tab>
+        
+         <apex:tab label="Basket Histories" name="iBasketHistories" id="iBasketHistories">
+            <apex:outputPanel id="pnliBasketHistories" layout="block">
+                 <apex:enhancedList type="IBatchBasketHistory__c" height="500" rowsPerPage="25"/>
+             </apex:outputPanel>
+            <apex:actionSupport event="ontabenter" rerender="pnliBasketHistories" status="status" onsubmit="if(isSubmit('iBasketHistories')==false) return false;" oncomplete="setTabName('iBasketHistories');"/> 
+        </apex:tab>
+        
+        <apex:tab label="Integration Group" name="integGroup" id="integGroup">
+            <apex:pageBlock id="pbIntegGroup">
+               <apex:ListViews type="skyvvasolutions__IntegrationGroup__c" />
+            </apex:pageBlock>
+          <apex:actionSupport event="ontabenter" rerender="pbIntegGroup" status="status" onsubmit="if(isSubmit('integGroup')==false) return false;" oncomplete="setTabName('integGroup');"/>
+        </apex:tab>
+        
+        <apex:tab label="Scheduler" name="schedulers" id="schedulers">
+            <apex:form >
+                <apex:pageMessages id="messages"/>
+	            <apex:outputPanel id="pnlschedulers" layout="block">
+	               <apex:pageBlock title="Schedulers"> 
+	                   <apex:pageBlockButtons location="top">   
+		                   <apex:commandButton value="Update Time Interval" status="status"
+		                      action="{!updateSchTimeInterval}" reRender="messages,pnlschedulers"/>
+		                   <apex:commandButton value="Refresh" status="status"
+                              action="{!refreshSchedulers}" reRender="messages,pnlschedulers"/>   
+		                </apex:pageBlockButtons>  
+		              <apex:pageBlockTable value="{!schedulers}" var="r">
+		                  <apex:column headerValue="Action">
+		                      <!--<apex:commandButton value="View Log"     
+		                       onclick="window.open('/002?parent_id={!URLENCODE(r.isch.Id)}&id={!URLENCODE(r.isch.Id)}&retURL={!$Page.IntegrationAdmin}');return false;" />
+		                        -->
+		                      <apex:commandLink value="Start" rendered="{!NOT(r.isRunning)}"   
+	                                action="{!invokeScheduler}" status="status" rerender="pnlschedulers,messages">
+                                <apex:param name="schID" value="{!r.isch.Id}" assignTo="{!schId}"/>
+	                          </apex:commandLink>                                 
+	                          <apex:commandLink value="Stop" rendered="{!r.isRunning}"   
+	                                onclick="if(!confirm('Are you sure ?'))return false;"
+                                    action="{!stopScheduler}" status="status" rerender="pnlschedulers,messages">
+                                <apex:param name="schID" value="{!r.isch.Id}" assignTo="{!schId}"/>
+                              </apex:commandLink>
+		                  </apex:column>
+		                  <apex:column headerValue="Scheduler">
+		                      <apex:outputLink value="/{!r.isch.Id}" target="_blank">{!r.sType}</apex:outputLink>		                  
+		                  </apex:column>
+		                  <apex:column value="{!r.isch.skyvvasolutions__IntegrationGroup__c}"/>		                  
+		                  <apex:column headerValue="Status">
+		                   <apex:image value="{!IF(r.isRunning,'/img/samples/color_green.gif', '/resource/1361867391000/skyvvasolutions__color_grey')}"
+                            height="15" width="25" style="border:0;" alt="{!IF(r.isRunning,'Running','Not Running')}"/>
+		                  </apex:column>
+		                  <apex:column headerValue="Comment">
+                           <apex:outputText value="{!r.isch.skyvvasolutions__Comment__c}"/>
+                          </apex:column>
+		                  
+		                  <apex:column headerValue="Time interval">
+	                        <apex:inputfield value="{!r.isch.skyvvasolutions__Time_Interval__c}" style="width:50px;"/>
+	                      </apex:column>
+	                      <apex:column headerValue="Job Id" value="{!r.cron.Id}"/>
+	                      <apex:column headerValue="Job Name" value="{!r.jobName}"/>
+	                      <apex:column headerValue="Submitted By" value="{!r.cron.CreatedById}"/>
+	                      <apex:column headerValue="Submitted" value="{!r.cron.CreatedDate}"/>
+	                      <apex:column headerValue="Started" value="{!r.cron.PreviousFireTime}"/>
+	                      <apex:column headerValue="Next Scheduled Run" value="{!r.cron.NextFireTime}"/>
+	                      
+	                      <apex:column value="{!r.isch.skyvvasolutions__Description__c}"/>
+	                      <apex:column value="{!r.isch.LastModifiedDate}"/>
+		              </apex:pageBlockTable>
+		          </apex:pageBlock> 
+	            </apex:outputPanel>
+            </apex:form>
+            <apex:actionSupport event="ontabenter" rerender="pnlschedulers" status="status" onsubmit="if(isSubmit('schedulers')==false) return false;" oncomplete="setTabName('schedulers');"/> 
+        </apex:tab>        
+        
+    </apex:tabPanel>
+    
+    
+    <script>
+        //search(/selectedTab/i)
+       function isSubmit(tab){
+           var tName=document.getElementById("pAdmindTab:frm:tabName").value;
+           //alert(tName);
+           if(tab != tName){
+               return true;
+               
+           }
+           return false;
+       }
+       
+       function setTabName(tab){
+           //alert(tab);
+           document.getElementById("pAdmindTab:frm:tabName").value=tab;
+       
+       }
+    </script>
+    
+    
+    <apex:actionStatus id="status">
+          <apex:facet name="start">
+            <c:Load BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="170px" ImageUrl="/img/loading.gif" Message="Please, wait..."  messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+           </apex:facet>
+       </apex:actionStatus>
+</apex:page>

@@ -1,0 +1,160 @@
+<apex:page id="page" sidebar="false" standardController="skyvvasolutions__Integration__c" extensions="skyvvasolutions.IntegrationBulkLogView">
+    
+    <apex:sectionHeader title="SKYVVA Integration Suite" subtitle="Bulk Control Board"></apex:sectionHeader>
+    
+    <apex:form id="frm">
+    
+        <apex:actionStatus id="status">
+            <apex:facet name="start">
+                <c:Load ImageUrl="/img/loading.gif" BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="120px" Message="Processing..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <apex:pageMessages id="messages"/>
+        
+        <apex:pageBlock id="pbFilter">
+           <apex:pageblockButtons id="btnFilter" location="bottom">
+               <apex:commandButton id="btnSearch" value="Search" action="{!search}" disabled="{!NOT(hasInterface)}"               
+                       status="status" reRender="pnlResult, pnlBulkSch, messages"/>
+               <apex:commandButton id="btnProcess" value="Process Bulk Attachment" action="{!processBulk}" disabled="{!NOT(hasInterface)}"                        
+                       status="status" reRender="pnlResult, pnlBulkSch, messages" title="Process a bulk attachment for the selected interface"/>
+           </apex:pageblockButtons>
+            
+           <apex:pageblocksection id="pbsFilter" columns="1">
+               <apex:pageblocksectionitem >
+                    <apex:outputLabel value="Integration Name"/>
+                    <apex:outputLink value="/{!integrationId}" target="_blank">{!integrationName}</apex:outputLink>
+               </apex:pageblocksectionitem>
+               <apex:pageblocksectionitem id="pbsInterface">
+                    <apex:outputLabel value="Inbound Interface"/>
+                    <apex:selectList id="selInterface" size="1" value="{!selInterface}">
+                        <apex:selectOptions value="{!interfaces}"/>
+                        <apex:actionSupport event="onchange" action="{!doInterfaceChange}" status="status" 
+                        reRender="pnlBulkSch, pnlResult, messages"/>
+                    </apex:selectList>             
+               </apex:pageblocksectionitem>
+           </apex:pageblocksection>
+           
+        </apex:pageBlock>
+        
+        <apex:outputPanel id="pnlBulkSch" layout="block">
+            <apex:pageBlock title="Bulk Interface Scheduler" rendered="{!NOT(ISNULL(schedulers))}">            
+                <apex:pageBlockTable value="{!schedulers}" var="r">
+                    <apex:column headerValue="Action">
+                         <apex:commandLink value="Start" rendered="{!NOT(r.isRunning)}" 
+                                title="Start bulk scheduler for the selected interface"  
+                                action="{!startScheduler}" status="status" reRender="pnlBulkSch, messages">
+                         </apex:commandLink>                                 
+                         <apex:commandLink value="Stop" rendered="{!r.isRunning}"  
+                                title="Stop bulk scheduler for the selected interface"   
+                                onclick="if(!confirm('Are you sure ?'))return false;"
+                                action="{!stopScheduler}" status="status" reRender="pnlBulkSch, messages">
+                          </apex:commandLink>
+                    </apex:column>
+                    <apex:column headerValue="Status">
+                     <apex:image value="{!IF(r.isRunning, '/img/samples/color_green.gif', '/img/samples/color_red.gif')}"
+                                height="15" width="25" style="border:0;" 
+                                alt="{!IF(r.isRunning, 'Running', 'Not Running')}"/>
+                    </apex:column>
+                    <apex:column headerValue="Job Id" value="{!r.schId}"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="pnlResult">
+        
+            <apex:pageBlock id="pbBulkLog" title="Bulk Logs [{!logSize}]" 
+                rendered="{!AND(NOT(ISNULL(selInterface)), NOT(isInterfaceChanged))}">
+                    
+                <apex:outputLabel value="No records to display" rendered="{!NOT(hasLog)}"/>
+                
+                <apex:pageBlockButtons id="pbBtnBulkLog" location="top">                   
+                        <apex:commandButton value="Clear" action="{!clearLogs}" disabled="{!NOT(hasLog)}" 
+                           onclick="if(confirm('Are you sure?')==false)return false;" status="status" 
+                           title="Clear interface bulk logs" rerender="pnlResult, messages"/>
+                        &nbsp;&nbsp;<apex:commandButton value="Refresh" action="{!refreshLogs}" 
+                           status="status" title="Refresh" rerender="pnlResult, messages"/>  
+                    </apex:pageBlockButtons>
+                
+                <div style="overflow:auto;height:{!IF(hasLog, '250px;','20px;')}">
+                
+                   <apex:pageBlockTable value="{!bulkLogs}" var="log" rendered="{!hasLog}">
+                        <apex:column headerValue="Total Records">
+                            <apex:outputText value="{!log.ber.total}"/>
+                        </apex:column>
+                        <apex:column headerValue="Completed">
+                            <apex:outputText value="{!log.ber.completed}"/>
+                        </apex:column>
+                        <apex:column headerValue="Failed">
+                            <apex:outputText value="{!log.ber.failed}"/>
+                        </apex:column>
+                        <apex:column headerValue="Pending">
+                            <apex:outputText value="{!log.ber.pending}"/>
+                        </apex:column>
+                        <apex:column value="{!log.apexJob.Id}"/>
+                        <apex:column value="{!log.apexJob.CreatedDate}"/>
+                        <apex:column value="{!log.apexJob.Status}"/>
+                        <apex:column value="{!log.apexJob.ExtendedStatus}"/>
+                        <apex:column value="{!log.apexJob.TotalJobItems}"/>
+                        <apex:column value="{!log.apexJob.JobItemsProcessed}"/>
+                        <apex:column value="{!log.apexJob.NumberOfErrors}"/>
+                        <apex:column value="{!log.apexJob.CompletedDate}"/>                      
+                   </apex:pageBlockTable>
+                </div>
+            </apex:pageBlock>
+            
+            <apex:repeat id="rpBulk" value="{!bulks}" var="tbl">
+        
+                <apex:pageBlock id="pbBulk" title="{!tbl.title}">
+                    
+                    <apex:outputLabel value="No records to display" rendered="{!NOT(tbl.hasRecord)}"/>
+                    
+                    <apex:pageBlockButtons id="pbBtnBulk" location="top">
+                       <apex:commandButton value="Delete All" action="{!tbl.deleteAll}" disabled="{!NOT(tbl.hasRecord)}" 
+                         onclick="if(confirm('Are you sure?')==false)return false;" status="status" title="Delete all records"
+                         oncomplete="window.scrollTo(0, 0);" rerender="pnlResult,messages"/>
+                       &nbsp;&nbsp;                        
+                       <apex:commandButton value="View List"     
+                       onclick="window.open('/002?parent_id={!URLENCODE(selInterface)}&id={!URLENCODE(selInterface)}&lsc={!tbl.lsc}&rowsperpage=100&retURL={!$Page.skyvvasolutions__IntegrationBulkLogView}?id={!URLENCODE($Request.id)}');return false;" 
+                       />
+                       <apex:commandButton value="Refresh" action="{!tbl.refresh}" rerender="pnlResult, messages" status="status" />
+                    </apex:pageBlockButtons>
+                                        
+                    <div id="divNav" align="right" style="visibility:{!IF(tbl.hasRecord, 'visible;', 'hidden;')}">                                               
+                       Page&nbsp;<apex:outputLabel value="{!tbl.pageNumber}"/>&nbsp;&nbsp;
+                       <apex:commandButton value="Previous" action="{!tbl.previous}" disabled="{!tbl.disablePrevious}" 
+                              status="status" rerender="pnlResult, messages"/>
+                       <apex:commandButton value="Next" action="{!tbl.next}" disabled="{!tbl.disableNext}" 
+                              status="status" rerender="pnlResult, messages"/>
+                     </div>  
+                        
+                    <div style="overflow:auto;height:{!IF(tbl.hasRecord, '350px;','0px;')}">
+                        
+                       <apex:pageBlockSection columns="1" rendered="{!tbl.hasRecord}" id="pbsBulk">
+                                      
+                            <apex:pageBlockTable value="{!tbl.bulkAttachments}" var="o" id="tblBulk">
+                                <apex:column headerValue="Action">   
+                                    <apex:commandLink value="Del" action="{!tbl.deleteOne}" 
+                                        onclick="if(confirm('Are you sure?')==false)return false;" 
+                                        styleClass="actionLink" status="status" rerender="pnlResult, messages">
+                                        <apex:param name="deleteAtt" value="{!o.att.Id}" assignTo="{!tbl.attId}"/>
+                                    </apex:commandLink> 
+                                </apex:column>                    
+                                <apex:column headerValue="Title">
+                                    <apex:outputLink value="/{!o.att.Id}" target="_blank">{!o.att.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column value="{!o.att.LastModifiedDate}"/>
+                                <apex:column value="{!o.att.CreatedById}"/>
+                            </apex:pageBlockTable>                                          
+                       </apex:pageBlockSection>
+                    </div>
+                    
+                </apex:pageBlock>
+                
+            </apex:repeat>
+            
+        </apex:outputPanel>
+        
+    </apex:form>
+    
+</apex:page>

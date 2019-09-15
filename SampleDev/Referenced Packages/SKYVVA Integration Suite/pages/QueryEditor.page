@@ -1,0 +1,190 @@
+<apex:page extensions="skyvvasolutions.QueryEditorController" standardController="skyvvasolutions__Interfaces__c" id="page" sidebar="false">
+	<apex:sectionHeader title="SKYVVA Integration Suite" subtitle="Query Editor"></apex:sectionHeader>
+	
+	<apex:includeScript value="{!URLFOR($Resource.skyvvasolutions__DynaTree, 'jquery/jquery.js' )}" />
+    <apex:includeScript value="{!URLFOR($Resource.skyvvasolutions__DynaTree, 'jquery/jquery-ui.custom.js' )}" />
+    <apex:includeScript value="{!URLFOR($Resource.skyvvasolutions__DynaTree, 'jquery/jquery.cookie.js' )}" />
+    <apex:includeScript value="{!URLFOR($Resource.skyvvasolutions__DynaTree, 'src/jquery.dynatree.js' )}" />
+    
+    <apex:stylesheet value="{!URLFOR($Resource.skyvvasolutions__DynaTree, 'src/skin/ui.dynatree.css')}" />
+    
+    <style>
+	
+	    .lblCol{
+	        color:#333333;
+	        font-size:91%;
+	        font-weight:bold;
+	        padding:2px 10px 2px 2px;
+	        text-align:right; 
+	    }
+	    .lblCol2{}
+	    
+	</style>
+	
+	<script type="text/javascript">
+	    $j = jQuery.noConflict();
+		$j(function(){
+		// Attach the dynatree widget to an existing <div id="tree"> element
+		// and pass the tree options as an argument to the dynatree() function:
+		initializeTree();
+	});
+	function initializeTree(){
+		//alert(document.getElementById('{!$Component.page:frm:jSONData}').value);
+		var jsonData = document.getElementById('{!$Component.page:frm:jSONData}').value;
+			//to avoid error Uncaught SyntaxError: Unexpected end of input
+			//in case jsonData is empty when page load
+			if(jsonData==null || jsonData.length<=0) {
+			     return; //no need to create tree bec no jsonData
+			}
+		var objJson = JSON.parse(jsonData);
+		$j("#tree").dynatree({
+		onActivate: function(node) {
+		// A DynaTreeNode object is passed to the activation handler
+		// Note: we also get this event, if persistence is on, and the page is reloaded.
+		//alert("You activated " + node.data.key);
+		},
+		persist: false,
+		checkbox: true,
+		generateIds: false,
+		selectMode: 3,
+		children: objJson,
+		onExpand: function(expand, dtnode) {
+			///alert(expand);
+			var tree = document.getElementById('tree');
+			if(expand){
+				tree.style.width = '1000px';
+				tree.style.height = '300px';
+				tree.style.overflow = 'scroll';
+			}else{
+				tree.style.width = '1000px';
+				tree.style.height = '30px';
+				tree.style.overflow = 'visible';
+			}
+		},
+		onSelect: function(select, node) {
+		// Get a list of all selected nodes, and convert to a key array:
+			var seltitles = $j.map(node.tree.getSelectedNodes(), function(node){
+			if (node.data.root=='false'){
+				return node.data.title;
+			}
+			return null;
+		});
+	
+			// Get a list of all selected TOP nodes
+			var selRootNodes = node.tree.getSelectedNodes(true);
+			// ... and convert to a key array:
+			var selRoottitles = $j.map(selRootNodes, function(node){
+				return node.data.title;
+			});
+			var sobjectName = document.getElementById('{!$Component.page:frm:pageBloc1:sobjNames}').value;
+			var selFields = document.getElementById('{!$Component.page:frm:pageBloc1:query}');
+			if (selRoottitles==sobjectName){
+				selFields.value = 'SELECT '+seltitles+' FROM '+sobjectName;
+			}else if (selRoottitles==''){
+				selFields.value = '';
+			}else{
+				selFields.value = 'SELECT '+selRoottitles+' FROM '+sobjectName;					
+			}
+			var query = document.getElementById('{!$Component.page:frm:query}');
+			query.value = selFields.value;
+		}
+	});
+	}
+	function doOpenReport(){
+		var reportId = document.getElementById('{!$Component.page:frm:reportId}');
+		if (reportId.value!=''){
+			window.open('/'+reportId.value);
+			reportId.value = '';
+		}else{
+			//make sure when click on button execute with SOQL mode dyna tree is not shown
+			initializeTree();
+		}
+	}
+    </script>
+    
+ 	<apex:form id="frm">
+ 		 		
+ 		<apex:actionFunction action="{!optionMode}"  rerender="frm" name="optionMode" status="status"/>
+ 		<apex:inputHidden id="jSONData" value="{!jSONData}" />
+ 		<apex:inputHidden id="query" value="{!query}" /> 		
+ 		<apex:inputHidden id="reportId" value="{!reportId}" />
+ 		
+		<apex:pageBlock id="pageBloc1">
+		
+		<apex:pageblockbuttons id="pBlockButton" location="top">
+			<apex:commandButton value="Save" id="SavetoInterface" action="{!doSaveQuery}" 
+			    	title="Save query interface" rerender="messages,query,pbTable" status="status"/>
+			<input type="button" class="btn" id="btnBack" onclick="top.document.location.href='/{!URLENCODE(intfId)}';" value="Cancel"/>
+		</apex:pageblockbuttons>
+		
+		<apex:panelGrid columns="2" cellspacing="5" columnClasses="lblCol,lblCol2" rendered="{!rptIncluded}">
+	        <apex:selectRadio value="{!optionMode}" id="optionMode" onchange="optionMode();">
+		       <apex:selectOption itemValue="SOQL" itemLabel="SOQL"  />
+		       <apex:selectOption itemValue="REPORT" itemLabel="REPORT"  />
+		    </apex:selectRadio>
+	    </apex:panelGrid>
+	    <apex:panelGrid columns="2" cellspacing="5" columnClasses="lblCol,lblCol2,lblCol,lblCol2">
+		    <apex:outputLabel >Interface Name</apex:outputLabel>
+		    <apex:outputText value="{!intfName}"/>
+	    </apex:panelGrid>
+	    
+	    <!-- Option SELECT Mode bloc -->
+		<apex:panelGrid columns="2" cellspacing="5" columnClasses="lblCol,lblCol2,lblCol,lblCol2" rendered="{!isSelectMode}">
+	        <apex:outputLabel >SObject Name </apex:outputLabel>	                
+	        <apex:selectList id="sobjNames" value="{!name}" size="1">    
+	            <apex:selectOptions value="{!sObjectNames}"/>
+	        	<apex:actionSupport event="onchange" 
+	                       action="{!updateTree}" 
+	                       onComplete="initializeTree();"
+	                       rerender="frm,tree,query,sobjNames" status="status"/>
+	        </apex:selectList> 	
+	    </apex:panelGrid>
+	    
+	     <!-- Option Report Mode bloc -->
+		<apex:panelGrid columns="2" cellspacing="5" columnClasses="lblCol,lblCol2,lblCol,lblCol2" rendered="{!Not(isSelectMode)}">
+        	<apex:outputLabel >Report Name </apex:outputLabel>	  
+	        <apex:selectList id="reportName" value="{!reportName}" size="1">    
+	            <apex:selectOptions value="{!reportNames}"/>
+	            <apex:actionSupport event="onchange" 
+	                       action="{!doChangeReportName}" 
+	                       rerender="frm,query" status="status"/>
+	        </apex:selectList> 	
+	    </apex:panelGrid>
+	    
+		<div id="tree"> </div><br/>
+		<apex:pagemessages id="messages"/>
+		<apex:panelGrid columns="2" cellspacing="5" columnClasses="lblCol,lblCol2,lblCol,lblCol2">
+		    <apex:commandButton value="{!cmdBtnName}" id="ExecuteSOQL" action="{!executeSOQL}" 
+		    	oncomplete="doOpenReport();"
+		    	rerender="messages,query,reportId,table" status="status"/>
+	    </apex:panelGrid>
+		
+		<apex:panelGrid columns="1" cellspacing="5">
+			<apex:inputTextarea id="query" value="{!query}" style="width:1000px; height:100px;"/>                
+	    </apex:panelGrid>
+	    <!-- Select Bloc -->
+		<apex:outputPanel id="table" layout="block">
+	       <apex:pageBlockSection id="pbTable" title="Execute Query Result (Show maximum 10 records)" rendered="{!isTableShow}"> 
+		        <apex:outputPanel layout="block" style="overflow:auto;width:1000px;">
+		        <apex:pageBlockTable value="{!objectList}" var="rec">  
+		            <apex:column value="{!rec.Id}" rendered="{!IF(selectedFields.size == 0 , true, false)}"/>  
+		            <apex:repeat value="{!selectedFields}" var="f">  
+		                <apex:column value="{!rec[f]}" 
+		                	rendered="{!IF( AND(f!='--None--', CONTAINS(blobFields,('['+f+']'))) , false, true)}"/>
+		                <apex:column headerValue="{!f}" rendered="{!IF( AND(f!='--None--', CONTAINS(blobFields,('['+f+']'))) , true, false)}">
+		                	<apex:outputText value="..."/>
+		                </apex:column> 
+		            </apex:repeat>
+		   		</apex:pageBlockTable>
+	   		</apex:outputPanel>
+	    	</apex:pageBlockSection>
+	   	</apex:outputPanel>
+	   	
+		</apex:pageBlock>
+		<apex:actionStatus id="status">
+	        <apex:facet name="start">
+	            <c:Load ImageUrl="/img/loading.gif" BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="120px" Message="Loading..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+	        </apex:facet>
+    	</apex:actionStatus>
+	</apex:form>
+</apex:page>

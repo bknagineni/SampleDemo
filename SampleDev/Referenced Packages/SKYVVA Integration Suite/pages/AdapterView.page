@@ -1,0 +1,29 @@
+<apex:page id="adapterView" standardController="skyvvasolutions__Adapter__c" extensions="skyvvasolutions.AdapterTestConnection">
+<apex:detail relatedList="false" title="true"/>
+<apex:include pageName="skyvvasolutions__ListAdapterProperty" id="adpViewListProperty"/>
+<apex:form >
+<apex:pageBlock title="Test Connection" id="pbConnectionInfo" id="pbConnectionInfo" rendered="{!isSAP}">
+    <apex:pageblockButtons id="pbButton">
+    	<apex:commandButton value="Save Request" action="{!saveRequest}"/>
+        <apex:commandButton value="Test Connection" action="{!testConnection}" status="status"/>
+    </apex:pageblockButtons>
+    <apex:pageMessages id="messages"/>
+    <apex:outputLabel value="File"/>
+    <apex:inputFile id="theFile" fileName="{!documentName}" value="{!documentBody}" contentType="{!documentContentType}" size="65"/>   
+	<apex:commandButton id="upload" value="Upload" action="{!uploadRequest}"/>
+    <apex:panelGrid columns="2" id="pnlGrid">
+			<apex:outputLabel value="Body" for="txtBody"/>
+			<apex:outputLabel value="Result" for="txtResult"/>
+			
+			<apex:inputTextarea id="txtBody" value="{!txtBody}" cols="100" rows="45"/>
+			<apex:inputTextarea id="txtResult" value="{!result}" cols="100" rows="45"/>
+	</apex:panelGrid>
+	
+</apex:pageBlock>
+<apex:actionStatus id="status">
+    <apex:facet name="start">
+        <c:Load ImageUrl="/img/loading.gif" BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="120px" Message="Loading..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+    </apex:facet>
+</apex:actionStatus>
+</apex:form>
+</apex:page>

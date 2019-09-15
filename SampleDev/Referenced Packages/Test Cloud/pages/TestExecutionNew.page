@@ -1,0 +1,20 @@
+<apex:page standardController="testcloud1__TestExecution__c">
+
+	<apex:form >
+		<apex:pageBlock title="Test Execution Details" mode="Edit">
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!save}" value="Save"/>
+				<apex:commandButton action="{!cancel}" value="Cancel"/>
+			</apex:pageBlockButtons>
+		
+			<apex:pageBlockSection >			
+				<apex:inputField value="{!testcloud1__TestExecution__c.testcloud1__Test__c}"/>
+				<apex:inputField value="{!testcloud1__TestExecution__c.testcloud1__OS__c}"/>
+				<apex:inputField value="{!testcloud1__TestExecution__c.testcloud1__Browser__c}"/>
+				<apex:inputField value="{!testcloud1__TestExecution__c.testcloud1__Version__c}"/>
+			</apex:pageBlockSection>
+					
+       </apex:pageBlock>
+	</apex:form>
+
+</apex:page>

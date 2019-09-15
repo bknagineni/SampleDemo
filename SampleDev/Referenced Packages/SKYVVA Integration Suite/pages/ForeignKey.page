@@ -1,0 +1,64 @@
+<apex:page standardController="skyvvasolutions__IForeignKeys__c" extensions="skyvvasolutions.ClsForeignKey" id="pageForeignKey">
+<apex:form id="frmForeignKey">
+    <apex:pageMessages id="messages"/>
+    <apex:actionFunction name="doSave" action="{!doSave}" oncomplete="checkErrMsag('{!URLENCODE(f.skyvvasolutions__InterfaceId__c)}');" reRender="messages" status="status"/>
+    <apex:pageBlock id="pbForeignKey" title="" mode="edit">
+                <apex:pageBlockSection id="pbsForeignKey" columns="1">
+                    <apex:outputField id="interface" value="{!f.skyvvasolutions__InterfaceId__c}"/>
+                    <apex:pageBlockSectionItem >
+                          <apex:outputLabel for="lookupField">Lookup Field Name</apex:outputLabel>
+                          <!-- style="width:160px;" -->
+                          <apex:selectList size="1" id="lookupField" value="{!lookupField}" onchange="doChange();">
+                                <apex:selectoptions value="{!lLookupField}"/>
+                          </apex:selectList>
+                     </apex:pageBlockSectionItem>
+                     <apex:actionFunction action="{!doChange}" rerender="pbForeignKey,messages" name="doChange" status="status"/>
+                     
+                     <apex:pageBlockSectionItem >
+                          <apex:outputLabel for="lookupSObject">Lookup Object Name</apex:outputLabel>
+                           <apex:outputText id="lookupSObject" value="{!lookupSObject}"/>
+                      </apex:pageBlockSectionItem>
+                      
+                      <apex:pageBlockSectionItem >
+                          <apex:outputLabel for="relationName">Lookup Relation Name</apex:outputLabel>
+                           <apex:outputText id="relationName" value="{!relationName}"/>
+                      </apex:pageBlockSectionItem>
+                      
+                      <apex:pageBlockSectionItem >
+                          <apex:outputLabel for="extId">Target External Id Field</apex:outputLabel>
+                          <apex:selectList size="1" id="extId" value="{!extId}">
+                                <apex:selectoptions value="{!lExtIdLooksObject}"/>
+                          </apex:selectList>
+                      </apex:pageBlockSectionItem>
+                      
+                                      
+                </apex:pageBlockSection>
+             
+            <apex:pageBlockButtons id="pbBBEdit_New">
+                <apex:commandButton id="btnSave" onclick="doSave(); return false;" value="Save"/>
+                <apex:commandButton action="{!btnCancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            
+    </apex:pageBlock>
+    
+    
+    <apex:actionStatus id="status">
+        <apex:facet name="start">
+        <c:Load ImageUrl="/img/loading.gif" BackColor="#efefef" borderColor="#336699" borderSize="3" height="50px" width="120px" Message="Processing..." messageStyle="color:darkred;font-size:11pt;font-weight:bold;"/>
+        </apex:facet>
+    </apex:actionStatus>
+    
+</apex:form>
+
+<script type="text/javascript">
+function checkErrMsag(sOId){
+    var err = document.getElementById('{!$Component.pageForeignKey:frmForeignKey:messages}');
+    //alert('Erreor: '+err.innerHTML+'>sOId: '+sOId);
+   
+    if(err.innerHTML==''){    
+        window.location="/"+sOId;
+     }
+}
+
+</script>
+</apex:page>
